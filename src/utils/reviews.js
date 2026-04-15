@@ -1,0 +1,56 @@
+export const testimonials = [
+  {
+    id: 1,
+    name: "Alexandra M.",
+    role: "Fashion Stylist",
+    avatar: "A",
+    rating: 5,
+    text: "Elivium has completely changed how I shop. The quality of every piece is exceptional — you can feel the difference the moment you touch the fabric. My clients constantly ask where I source such refined pieces.",
+    location: "Paris, France",
+  },
+  {
+    id: 2,
+    name: "James K.",
+    role: "Creative Director",
+    avatar: "J",
+    rating: 5,
+    text: "I've been a customer for two years now. The Tailored Slim Suit is the most complimented piece in my wardrobe. The cut is perfect, the fabric breathes beautifully, and it holds its shape after countless wears.",
+    location: "London, UK",
+  },
+  {
+    id: 3,
+    name: "Sofia R.",
+    role: "Architect",
+    avatar: "S",
+    rating: 5,
+    text: "What I love most is the consistency. Every order arrives immaculately packaged, every item matches its description exactly, and the customer service is genuinely attentive. Rare to find this level of care.",
+    location: "Milan, Italy",
+  },
+  {
+    id: 4,
+    name: "Nour A.",
+    role: "Entrepreneur",
+    avatar: "N",
+    rating: 4,
+    text: "The Cashmere Wrap Dress is an absolute dream. I wore it to three events this season and received compliments at every single one. Worth every penny — this is what luxury clothing should feel like.",
+    location: "Dubai, UAE",
+  },
+  {
+    id: 5,
+    name: "Marcus T.",
+    role: "Photographer",
+    avatar: "M",
+    rating: 5,
+    text: "Discovered Elivium through a friend and immediately ordered the Merino Turtleneck. It arrived in 3 days, fits like it was made for me, and has become my most-worn piece this winter.",
+    location: "New York, USA",
+  },
+];
+
+export const productReviews = [
+  { id: 1, productId: 1, name: "Elena V.", rating: 5, date: "March 2026", text: "Absolutely stunning coat. The wool quality is outstanding and the cut is incredibly flattering." },
+  { id: 2, productId: 1, name: "Hannah B.", rating: 5, date: "February 2026", text: "Best coat I've ever owned. True to size, warm without being bulky, and gets better with every wear." },
+  { id: 3, productId: 1, name: "Priya K.", rating: 4, date: "January 2026", text: "Beautiful coat. Went up one size as the cut is slightly slim. Looks exactly like the photos." },
+  { id: 4, productId: 3, name: "David L.", rating: 5, date: "March 2026", text: "Exceptional suit. The tailoring is perfect right off the rack. Wore it to a wedding and felt incredible." },
+  { id: 5, productId: 3, name: "Chris M.", rating: 5, date: "February 2026", text: "Best quality suit I've bought online. The fabric is substantial and the fit is spot-on in my usual size." },
+  { id: 6, productId: 9, name: "Isabelle F.", rating: 5, date: "March 2026", text: "This dress is pure luxury. The cashmere is incredibly soft and the wrap style is genuinely flattering." },
+];
