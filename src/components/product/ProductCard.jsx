@@ -1,23 +1,32 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useCart }     from "../../context/CartContext.jsx";
+import { useCart } from "../../context/CartContext.jsx";
 import { useWishlist } from "../../context/WishlistContext.jsx";
 import { formatPrice } from "../../utils/formatPrice.js";
-import ProductRating   from "./ProductRating.jsx";
+import ProductRating from "./ProductRating.jsx";
 
 export default function ProductCard({ product, index = 0 }) {
-  const [hovered, setHovered]   = useState(false);
-  const [imgIdx,  setImgIdx]    = useState(0);
-  const [added,   setAdded]     = useState(false);
-  const { addToCart }   = useCart();
+  const [hovered, setHovered] = useState(false);
+  const [imgIdx, setImgIdx] = useState(0);
+  const [added, setAdded] = useState(false);
+  const { addToCart } = useCart();
   const { toggle, isWishlisted } = useWishlist();
   const wishlisted = isWishlisted(product.id);
+
+  // التحقق من وجود البيانات
+  const images = product.images && Array.isArray(product.images) ? product.images : [];
+  const colors = product.colors && Array.isArray(product.colors) ? product.colors : [];
+  const colorNames = product.color_names && Array.isArray(product.color_names) ? product.color_names : [];
+  const sizes = product.sizes && Array.isArray(product.sizes) ? product.sizes : [];
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product, product.sizes[0], product.colorNames[0]);
+    
+    if (sizes.length === 0) return;
+    
+    addToCart(product, sizes[0], colorNames[0] || "Default", 1);
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   };
@@ -38,14 +47,20 @@ export default function ProductCard({ product, index = 0 }) {
       <Link to={`/product/${product.id}`} className="block group">
         <div
           className="card-product relative"
-          onMouseEnter={() => { setHovered(true); setImgIdx(1); }}
-          onMouseLeave={() => { setHovered(false); setImgIdx(0); }}
+          onMouseEnter={() => {
+            setHovered(true);
+            setImgIdx(images.length > 1 ? 1 : 0);
+          }}
+          onMouseLeave={() => {
+            setHovered(false);
+            setImgIdx(0);
+          }}
         >
           {/* Image */}
           <div className="relative overflow-hidden aspect-[3/4]">
             <motion.img
               key={imgIdx}
-              src={product.images[imgIdx] || product.images[0]}
+              src={images[imgIdx] || "https://via.placeholder.com/300"}
               alt={product.name}
               className="w-full h-full object-cover"
               animate={{ scale: hovered ? 1.07 : 1 }}
@@ -54,11 +69,15 @@ export default function ProductCard({ product, index = 0 }) {
 
             {/* Badges */}
             <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-              {product.isNew && (
-                <span className="bg-white text-obsidian-900 text-xs font-bold px-2.5 py-1 tracking-widest uppercase">New</span>
+              {product.is_new && (
+                <span className="bg-white text-obsidian-900 text-xs font-bold px-2.5 py-1 tracking-widest uppercase">
+                  New
+                </span>
               )}
               {product.discount > 0 && (
-                <span className="bg-gold-500 text-obsidian-900 text-xs font-bold px-2.5 py-1 tracking-widest">-{product.discount}%</span>
+                <span className="bg-gold-500 text-obsidian-900 text-xs font-bold px-2.5 py-1 tracking-widest">
+                  -{product.discount}%
+                </span>
               )}
             </div>
 
@@ -66,12 +85,23 @@ export default function ProductCard({ product, index = 0 }) {
             <button
               onClick={handleWishlist}
               className={`absolute top-3 right-3 w-9 h-9 flex items-center justify-center transition-all duration-300 ${
-                wishlisted ? "bg-gold-500 text-obsidian-900" : "bg-obsidian-900/70 text-white hover:bg-white hover:text-obsidian-900"
+                wishlisted
+                  ? "bg-gold-500 text-obsidian-900"
+                  : "bg-obsidian-900/70 text-white hover:bg-white hover:text-obsidian-900"
               } ${hovered ? "opacity-100" : "opacity-0"}`}
             >
-              <svg className="w-4 h-4" fill={wishlisted ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+              <svg
+                className="w-4 h-4"
+                fill={wishlisted ? "currentColor" : "none"}
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.5}
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
               </svg>
             </button>
 
@@ -107,16 +137,25 @@ export default function ProductCard({ product, index = 0 }) {
             </div>
             <ProductRating rating={product.rating} reviews={product.reviews} />
             <div className="flex items-center gap-3 mt-2.5">
-              <span className="text-white font-semibold">{formatPrice(product.price)}</span>
+              <span className="text-white font-semibold">
+                {formatPrice(product.price)}
+              </span>
               {product.discount > 0 && (
-                <span className="text-obsidian-300 text-sm line-through">{formatPrice(product.originalPrice)}</span>
+                <span className="text-obsidian-300 text-sm line-through">
+                  {formatPrice(product.original_price)}
+                </span>
               )}
             </div>
 
             {/* Color dots */}
             <div className="flex gap-1.5 mt-3">
-              {product.colors.map((c, i) => (
-                <div key={i} className="w-3.5 h-3.5 rounded-full border border-obsidian-400" style={{ background: c }} title={product.colorNames[i]} />
+              {colors.map((c, i) => (
+                <div
+                  key={i}
+                  className="w-3.5 h-3.5 rounded-full border border-obsidian-400"
+                  style={{ background: c }}
+                  title={colorNames[i] || `Color ${i + 1}`}
+                />
               ))}
             </div>
           </div>

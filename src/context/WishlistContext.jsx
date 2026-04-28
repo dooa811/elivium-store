@@ -4,7 +4,11 @@ const WishlistContext = createContext(null);
 
 export function WishlistProvider({ children }) {
   const [items, setItems] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("elivium_wishlist")) || []; } catch { return []; }
+    try {
+      return JSON.parse(localStorage.getItem("elivium_wishlist")) || [];
+    } catch {
+      return [];
+    }
   });
 
   useEffect(() => {
@@ -12,14 +16,14 @@ export function WishlistProvider({ children }) {
   }, [items]);
 
   const toggle = (product) => {
-    setItems(prev =>
-      prev.find(i => i.id === product.id)
-        ? prev.filter(i => i.id !== product.id)
+    setItems((prev) =>
+      prev.find((i) => i.id === product.id)
+        ? prev.filter((i) => i.id !== product.id)
         : [...prev, product]
     );
   };
 
-  const isWishlisted = (id) => items.some(i => i.id === id);
+  const isWishlisted = (id) => items.some((i) => i.id === id);
   const count = items.length;
 
   return (
