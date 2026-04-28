@@ -1,5 +1,6 @@
 const sgMail = require('@sendgrid/mail');
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);// ← حطي الـ API Key هون
+
 const sendVerificationEmail = async (email, verificationCode, userName) => {
   try {
     const verificationLink = `${process.env.FRONTEND_URL}/verify-email?code=${verificationCode}&email=${encodeURIComponent(email)}`;
