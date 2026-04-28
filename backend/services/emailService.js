@@ -1,13 +1,11 @@
-const { Resend } = require('resend');
-
-const resend = new Resend('re_EyGv3mW4_P1WojueqkzrQCmEirzsdBnss'); // ← حطي الـ API Key هون
-
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const sendVerificationEmail = async (email, verificationCode, userName) => {
   try {
     const verificationLink = `${process.env.FRONTEND_URL}/verify-email?code=${verificationCode}&email=${encodeURIComponent(email)}`;
 
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
+    await sgMail.send({
+      from: 'doaazaqout99@gmail.com',
       to: email,
       subject: '✅ تحقق من بريدك الإلكتروني - Elivium',
       html: `
@@ -42,8 +40,8 @@ const sendPasswordResetEmail = async (email, resetToken, userName) => {
   try {
     const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
 
-    await resend.emails.send({
-      from: 'onboarding@resend.dev',
+    await sgMail.send({
+      from: 'doaazaqout99@gmail.com',
       to: email,
       subject: '🔑 إعادة تعيين كلمة المرور - Elivium',
       html: `
