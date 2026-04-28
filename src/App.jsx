@@ -14,6 +14,13 @@ function ScrollToTop() {
   return null;
 }
 
+// ← امسح البيانات القديمة مرة وحدة
+if (!localStorage.getItem("elivium_v2")) {
+  localStorage.removeItem("elivium_cart");
+  localStorage.removeItem("elivium_wishlist");
+  localStorage.setItem("elivium_v2", "true");
+}
+
 export default function App() {
   return (
     <BrowserRouter>
