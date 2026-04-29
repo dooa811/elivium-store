@@ -1,59 +1,63 @@
 import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
-export default function Newsletter() {
-  const [email, setEmail]     = useState("");
-  const [done,  setDone]      = useState(false);
-  const [error, setError]     = useState("");
-  const ref     = useRef(null);
+export function Newsletter() {
+  const [email, setEmail] = useState("");
+  const [done, setDone] = useState(false);
+  const [error, setError] = useState("");
+  const ref = useRef(null);
   const visible = useInView(ref, { once: true, margin: "-60px" });
 
   const submit = (e) => {
     e.preventDefault();
-    if (!email.includes("@")) { setError("Please enter a valid email."); return; }
+    if (!email.includes("@")) { setError("Please enter a valid email address."); return; }
     setDone(true);
   };
 
   return (
-    <section className="section-pad bg-obsidian-800 border-y border-obsidian-700 relative overflow-hidden" ref={ref}>
-      {/* Decorative */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gold-500/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none"/>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-gold-500/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl pointer-events-none"/>
+    <section style={{ padding: "80px 24px", background: "rgba(255,255,255,0.015)", borderTop: "1px solid rgba(255,255,255,0.04)", borderBottom: "1px solid rgba(255,255,255,0.04)", position: "relative", overflow: "hidden", fontFamily: "'DM Sans', sans-serif" }} ref={ref}>
+      {/* Decorative orbs */}
+      <div style={{ position: "absolute", top: "-30%", right: "-10%", width: 400, height: 400, background: "radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "-30%", left: "-10%", width: 300, height: 300, background: "radial-gradient(circle, rgba(212,175,55,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
 
-      <div className="container-xl relative z-10">
-        <motion.div initial={{ opacity: 0, y: 28 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }}
-          className="max-w-2xl mx-auto text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.4em] text-gold-500">Exclusive Access</span>
-          <h2 className="font-display text-4xl sm:text-5xl font-bold text-white mt-3 mb-4">
+      <div style={{ maxWidth: 600, margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} animate={visible ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7 }} style={{ textAlign: "center" }}>
+          <p style={{ fontSize: 11, letterSpacing: "0.4em", color: "#d4af37", textTransform: "uppercase", margin: "0 0 12px", fontWeight: 500 }}>Exclusive Access</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 300, color: "#fff", margin: "0 0 14px", fontFamily: "'Cormorant Garamond', serif", letterSpacing: "0.03em" }}>
             Be the First to Know
           </h2>
-          <p className="text-gray-400 font-light mb-10 leading-relaxed">
+          <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 14, margin: "0 0 36px", fontWeight: 300, lineHeight: 1.8 }}>
             Subscribe to receive early access to new collections, exclusive member offers, and style editorials curated by our team.
           </p>
 
-          {done ? (
-            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-              className="glass-gold p-8 text-center">
-              <div className="text-3xl mb-3">✦</div>
-              <p className="text-gold-400 font-semibold text-lg">Welcome to the Elivium Circle.</p>
-              <p className="text-obsidian-200 text-sm mt-2">Expect something beautiful in your inbox soon.</p>
-            </motion.div>
-          ) : (
-            <form onSubmit={submit} className="flex flex-col sm:flex-row gap-0 max-w-lg mx-auto">
-              <input
-                type="email" value={email} onChange={e => { setEmail(e.target.value); setError(""); }}
-                placeholder="Enter your email address"
-                className="flex-1 bg-obsidian-700 border border-obsidian-500 text-white placeholder-obsidian-300 px-5 py-4 text-sm focus:outline-none focus:border-gold-500 transition-colors"
-              />
-              <button type="submit" className="btn-gold px-8 py-4 text-xs whitespace-nowrap">
-                Subscribe
-              </button>
-            </form>
-          )}
-          {error && <p className="text-red-400 text-xs mt-2">{error}</p>}
-          {!done && <p className="text-obsidian-300 text-xs mt-4">No spam. Unsubscribe at any time.</p>}
+          <AnimatePresence mode="wait">
+            {done ? (
+              <motion.div key="done" initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                style={{
+                  background: "rgba(255,255,255,0.02)", border: "1px solid rgba(212,175,55,0.15)",
+                  borderRadius: 20, padding: "36px 32px", position: "relative", overflow: "hidden"
+                }}
+              >
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.4), transparent)" }} />
+                <p style={{ fontSize: 20, color: "rgba(212,175,55,0.4)", margin: "0 0 12px" }}>✦</p>
+                <p style={{ color: "#d4af37", fontSize: 16, fontWeight: 500, margin: "0 0 6px", fontFamily: "'Cormorant Garamond', serif" }}>Welcome to the Elivium Circle.</p>
+                <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 13, margin: 0, fontWeight: 300 }}>Expect something beautiful in your inbox soon.</p>
+              </motion.div>
+            ) : (
+              <motion.form key="form" onSubmit={submit}>
+                <div style={{ display: "flex", maxWidth: 480, margin: "0 auto" }} className="nl-form">
+                  <style>{`.nl-form input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-right:none;border-radius:12px 0 0 12px;padding:15px 20px;color:#fff;font-size:14px;outline:none;transition:border-color 0.3s;font-family:'DM Sans',sans-serif}.nl-form input:focus{border-color:rgba(212,175,55,0.4)}.nl-form input::placeholder{color:rgba(255,255,255,0.2)}.nl-form button{padding:15px 28px;background:linear-gradient(135deg,#d4af37 0%,#f0d060 50%,#d4af37 100%);border:none;border-radius:0 12px 12px 0;color:#0a0a0a;font-size:11px;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;transition:all 0.3s}.nl-form button:hover{box-shadow:0 6px 20px rgba(212,175,55,0.25)}`}</style>
+                  <input type="email" value={email} onChange={e => { setEmail(e.target.value); setError(""); }} placeholder="Enter your email address" />
+                  <button type="submit">Subscribe</button>
+                </div>
+                {error && <p style={{ color: "#fca5a5", fontSize: 12, marginTop: 8 }}>{error}</p>}
+                <p style={{ color: "rgba(255,255,255,0.2)", fontSize: 11, marginTop: 14, letterSpacing: "0.05em" }}>No spam. Unsubscribe at any time.</p>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     </section>
   );
 }
+export default Newsletter;
