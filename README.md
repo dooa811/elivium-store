@@ -30,10 +30,10 @@
 ## 🔑 Demo Credentials
 
 **Admin:**
-```
-Email:    admin@elivium.com
-Password: Admin123!@#
-```
+🔐 Admin Access: Available upon request for evaluation purposes.
+Contact: doaazaqout99@gmail.com
+
+
 
 > ⚠️ Verification emails may land in **Spam** — this is expected in the demo environment.
 
